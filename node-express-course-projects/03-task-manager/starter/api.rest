@@ -1,0 +1,17 @@
+@baseTaskUrl = http://localhost:3000/api/v1/tasks/
+
+GET {{baseTaskUrl}}
+
+
+### get a task
+GET {{baseTaskUrl}}/task2
+
+
+### create task
+POST {{baseTaskUrl}}
+Content-Type: application/json
+
+{
+    "name": "Another Task Name",
+    "completed": false
+}
