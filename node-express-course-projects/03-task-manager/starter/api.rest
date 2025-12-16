@@ -1,10 +1,13 @@
 @baseTaskUrl = http://localhost:3000/api/v1/tasks/
 
+
+### get all tasks
 GET {{baseTaskUrl}}
 
 
 ### get a task
-GET {{baseTaskUrl}}/task2
+GET {{baseTaskUrl}}/694017d3a1eaba30f8a0d047
+
 
 
 ### create task
@@ -12,6 +15,21 @@ POST {{baseTaskUrl}}
 Content-Type: application/json
 
 {
-    "name": "Another Task Name",
+    "name": "walk the dog",
     "completed": false
 }
+
+
+### delete task 
+DELETE {{baseTaskUrl}}/69400d73b69c2b0f00666b58
+
+### update task
+PATCH {{baseTaskUrl}}/694084a97d22962d08ae6ce7
+Content-Type: application/json
+
+{
+    "name": "walk the dog",
+    "completed": false
+}
+
+

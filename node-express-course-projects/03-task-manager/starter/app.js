@@ -1,20 +1,18 @@
 const connectDB = require("./db/connect.js");
 const express = require("express");
-require("dotenv").config();
-
 const tasks = require("./routes/tasks.js");
+require("dotenv").config();
+const notFound = require("./middleware/404.js");
 
 const app = express();
 
 // middleware
+app.use(express.static("./public"));
 app.use(express.json());
 
-// get request
-app.get("/hello", (req, res) => {
-  res.send("<h1>Task Manager App</h1>");
-});
-
 app.use("/api/v1/tasks", tasks);
+
+app.use(notFound);
 const PORT = process.env.PORT || 5000;
 
 const start = async () => {

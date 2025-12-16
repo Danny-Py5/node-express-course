@@ -8,7 +8,7 @@ const TaskSchema = new Schema({
     trim: true,
     maxlength: [20, "name cannot be more than 20 characters"],
   },
-  completed: String,
+  completed: Boolean,
 });
 
 module.exports = model("tasks", TaskSchema);
