@@ -6,7 +6,7 @@ GET {{baseTaskUrl}}
 
 
 ### get a task
-GET {{baseTaskUrl}}/694017d3a1eaba30f8a0d047
+GET {{baseTaskUrl}}/69400da8b69c2b0f00666b5a
 
 
 
@@ -15,21 +15,20 @@ POST {{baseTaskUrl}}
 Content-Type: application/json
 
 {
-    "name": "walk the dog",
-    "completed": false
+    "name": "Task name ii",
+    "completed": true
 }
 
 
 ### delete task 
-DELETE {{baseTaskUrl}}/69400d73b69c2b0f00666b58
+DELETE {{baseTaskUrl}}/6941e2e16b2af6264071dba3
 
 ### update task
-PATCH {{baseTaskUrl}}/694084a97d22962d08ae6ce7
+PATCH {{baseTaskUrl}}/69400da8b69c2b0f00666b5a
 Content-Type: application/json
 
 {
-    "name": "walk the dog",
-    "completed": false
+    "name": "Task name"
 }
 
 
