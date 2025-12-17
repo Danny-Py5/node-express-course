@@ -9,7 +9,10 @@ Content-Type: application/json
 
 {
     "name": "t-shirt",
-    "price": 5000
+    "price": 5000, 
+    "featured": true, 
+    "rating": 3.5,
+    "company": "caressa"
 }
 
 
@@ -17,7 +20,7 @@ Content-Type: application/json
 GET {{base}}/{{productAPI}}
 
 ### delete a product
-DELETE {{base}}/{{productAPI}}/69427b38cd3ce94bfc77459b
+DELETE {{base}}/{{productAPI}}/6942adbbecb850215cb98888
 
 
 ### get a product 
