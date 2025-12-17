@@ -1,13 +1,35 @@
 const { createCustomAPIError } = require("../errors/custom-api-error");
 const productModel = require("../models/product");
 
+const getAllProductsStatic = async (req, res, next) => {
+  const sortedProducts = await productModel.find({}).sort("-name");
+  res.status(200).json({ sortedProducts, length: sortedProducts.length });
+};
+
 const getAllProducts = async (req, res, next) => {
-  try {
-    const products = await productModel.find({});
-    res.status(200).json({ products, length: products.length });
-  } catch (error) {
-    next(error);
+  const { featured, company, name, sort } = req.query;
+  const queryObject = {};
+
+  if (featured) {
+    queryObject.featured = featured === "true" ? true : false;
   }
+  if (company) {
+    queryObject.company = company;
+  }
+  if (name) {
+    queryObject.name = { $regex: name, $options: "i" };
+  }
+  let result = productModel.find(queryObject);
+  // chain and sort
+  let products;
+  if (sort) {
+    console.log(sort.replace(/,/g, " "));
+    products = await result.sort(sort.replace(/,/g, " "));
+  } else {
+    products = await result;
+  }
+
+  res.status(200).json({ products, length: products.length });
 };
 
 const getProduct = async (req, res, next) => {
@@ -78,5 +100,6 @@ module.exports = {
     deleteProduct,
     getProduct,
     updateProduct,
+    getAllProductsStatic,
   },
 };

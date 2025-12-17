@@ -6,6 +6,7 @@ router
   .route("/")
   .get(controllers.getAllProducts)
   .post(controllers.createProduct);
+router.get("/test", controllers.getAllProductsStatic);
 router
   .route("/:id")
   .delete(controllers.deleteProduct)

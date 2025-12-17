@@ -3,6 +3,13 @@
 
 GET {{base}}/{{productAPI}}
 
+### get product sort 
+GET {{base}}/{{productAPI}}?featured=false&sort=-name,company
+
+### get product static
+GET {{base}}/{{productAPI}}/test
+
+
 ### create product
 POST {{base}}/{{productAPI}}
 Content-Type: application/json
