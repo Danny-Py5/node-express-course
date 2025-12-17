@@ -7,7 +7,7 @@ GET {{base}}/{{productAPI}}
 GET {{base}}/{{productAPI}}?featured=false&sort=-name,company
 
 ### get product static
-GET {{base}}/{{productAPI}}/test
+GET {{base}}/{{productAPI}}/test?field=name,price
 
 
 ### create product
