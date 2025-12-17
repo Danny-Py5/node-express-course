@@ -2,11 +2,12 @@ const { createCustomAPIError } = require("../errors/custom-api-error");
 const productModel = require("../models/product");
 
 const getAllProductsStatic = async (req, res, next) => {
-  const { field: select } = req.query;
-
   const sortedProducts = await productModel
     .find({})
-    .select(select.replace(/,/g, " "));
+    .sort("name")
+    .select("name price")
+    .limit(10)
+    .skip(10);
   res.status(200).json({ sortedProducts, length: sortedProducts.length });
 };
 

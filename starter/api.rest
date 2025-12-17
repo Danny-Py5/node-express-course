@@ -9,11 +9,11 @@ GET {{base}}/{{productAPI}}?featured=true&sort=-name,company
 ### get product field
 GET {{base}}/{{productAPI}}?featured=true&sort=-name,company&fields=name
 
-### get field without filter
+### get all product field without filter
 GET {{base}}/{{productAPI}}?fields=name
 
 ### get product static
-GET {{base}}/{{productAPI}}/test?=name,price
+GET {{base}}/{{productAPI}}
 
 
 ### create product
