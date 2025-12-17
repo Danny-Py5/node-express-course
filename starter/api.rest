@@ -1,0 +1,33 @@
+@base = http://localhost:3000
+@productAPI = api/v1/products
+
+GET {{base}}/{{productAPI}}
+
+### create product
+POST {{base}}/{{productAPI}}
+Content-Type: application/json
+
+{
+    "name": "t-shirt",
+    "price": 5000
+}
+
+
+### get all products
+GET {{base}}/{{productAPI}}
+
+### delete a product
+DELETE {{base}}/{{productAPI}}/69427b38cd3ce94bfc77459b
+
+
+### get a product 
+GET {{base}}/{{productAPI}}/69427b28cd3ce94bfc774599
+
+### update a product
+PATCH {{base}}/{{productAPI}}/6942adbbecb850215cb98888
+Content-Type: application/json
+
+{
+    "name": "t-shirt ",
+    "price": 90
+}
