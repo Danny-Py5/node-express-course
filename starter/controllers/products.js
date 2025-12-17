@@ -1,64 +1,75 @@
 const { createCustomAPIError } = require("../errors/custom-api-error");
-const asyncWrapper = require("../middleware/asyncWrapper");
 const productModel = require("../models/product");
 
-const getAllProducts = asyncWrapper(async (req, res, next) => {
-  const products = await productModel.find({});
-  res.status(200).json({ products, length: products.length });
-});
-
-const getProduct = asyncWrapper(async (req, res, next) => {
-  const product = await productModel.findOne({ _id: req.params.id });
-  if (!product) {
-    return next(
-      createCustomAPIError(`No product with id: ${req.params.id}`, 404)
-    );
+const getAllProducts = async (req, res, next) => {
+  try {
+    const products = await productModel.find({});
+    res.status(200).json({ products, length: products.length });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({ product });
-});
+};
 
-const createProduct = asyncWrapper(async (req, res, next) => {
-  const createdProduct = await productModel.create(req.body);
-  res.status(201).json({ createdProduct });
-});
-
-const deleteProduct = asyncWrapper(async (req, res, next) => {
-  const deletedProduct = await productModel.findOneAndDelete({
-    _id: req.params.id,
-  });
-
-  if (!deletedProduct) {
-    const err = createCustomAPIError(
-      `No product with id: ${req.params.id}`,
-      404
-    );
-    return next(err);
+const getProduct = async (req, res, next) => {
+  try {
+    const product = await productModel.findOne({ _id: req.params.id });
+    if (!product) {
+      return next(
+        createCustomAPIError(`No product with id: ${req.params.id}`, 404)
+      );
+    }
+    res.status(200).json({ product });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({
-    deletedProduct,
-    msg: `product  deleted`,
-    id: req.params.id,
-    method: req.method,
-    url: req.url,
-  });
-});
+};
 
-const updateProduct = asyncWrapper(async (req, res, next) => {
-  const updatedProduct = await productModel.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    { new: true, runValidation: true }
-  );
-  if (!updatedProduct) {
-    return next(
-      productModel.createCustomAPIError(
-        `No product with id: ${req.params.id}`,
-        404
-      )
-    );
+const createProduct = async (req, res, next) => {
+  try {
+    const createdProduct = await productModel.create(req.body);
+    res.status(201).json({ product: createdProduct });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({ msg: "product updated!" });
-});
+};
+
+const deleteProduct = async (req, res, next) => {
+  try {
+    const deletedProduct = await productModel.findOneAndDelete({
+      _id: req.params.id,
+    });
+
+    if (!deletedProduct) {
+      return next(
+        createCustomAPIError(`No product with id: ${req.params.id}`, 404)
+      );
+    }
+    res.status(200).json({
+      deletedProduct,
+      msg: `product  deleted`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateProduct = async (req, res, next) => {
+  try {
+    const updatedProduct = await productModel.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedProduct) {
+      return next(
+        createCustomAPIError(`No product with id: ${req.params.id}`, 404)
+      );
+    }
+    res.status(200).json({ product: updatedProduct });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   controllers: {
