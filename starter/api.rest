@@ -4,10 +4,16 @@
 GET {{base}}/{{productAPI}}
 
 ### get product sort 
-GET {{base}}/{{productAPI}}?featured=false&sort=-name,company
+GET {{base}}/{{productAPI}}?featured=true&sort=-name,company
+
+### get product field
+GET {{base}}/{{productAPI}}?featured=true&sort=-name,company&fields=name
+
+### get field without filter
+GET {{base}}/{{productAPI}}?fields=name
 
 ### get product static
-GET {{base}}/{{productAPI}}/test?field=name,price
+GET {{base}}/{{productAPI}}/test?=name,price
 
 
 ### create product
