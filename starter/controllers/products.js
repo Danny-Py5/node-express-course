@@ -42,21 +42,16 @@ const getAllProducts = async (req, res, next) => {
     );
     // console.log(filters.split(",")[0].split("-"));
     const options = ["price", "rating"];
-
-    const items = filters.split(",");
-
-    for (const item of items) {
+    filters = filters.split(",").forEach((item) => {
       const [field, operator, value] = item.split("-");
-
-      if (!options.includes(field)) continue;
-
-      const numValue = Number(value);
-      if (Number.isNaN(numValue)) {
+      if (Number.isNaN(Number(value))) {
         return next(new CustomAPIError(`${field} must be a number`, 400));
       }
-
-      queryObject[field] = { [operator]: numValue };
-    }
+      if (options.includes(field)) {
+        queryObject[field] = { [operator]: Number(value) };
+      }
+    });
+    if (!filters) return;
   }
   let result = productModel.find(queryObject);
   // sort
