@@ -1,4 +1,7 @@
-const { createCustomAPIError } = require("../errors/custom-api-error");
+const {
+  createCustomAPIError,
+  CustomAPIError,
+} = require("../errors/custom-api-error");
 const productModel = require("../models/product");
 
 const getAllProductsStatic = async (req, res, next) => {
@@ -39,12 +42,21 @@ const getAllProducts = async (req, res, next) => {
     );
     // console.log(filters.split(",")[0].split("-"));
     const options = ["price", "rating"];
-    filters = filters.split(",").forEach((item) => {
+
+    const items = filters.split(",");
+
+    for (const item of items) {
       const [field, operator, value] = item.split("-");
-      if (options.includes(field)) {
-        queryObject[field] = { [operator]: Number(value) };
+
+      if (!options.includes(field)) continue;
+
+      const numValue = Number(value);
+      if (Number.isNaN(numValue)) {
+        return next(new CustomAPIError(`${field} must be a number`, 400));
       }
-    });
+
+      queryObject[field] = { [operator]: numValue };
+    }
   }
   let result = productModel.find(queryObject);
   // sort
