@@ -12,8 +12,11 @@ GET {{base}}/{{productAPI}}?featured=true&sort=-name,company&fields=name
 ### get all product field without filter
 GET {{base}}/{{productAPI}}?fields=name
 
+### numerics filter
+GET {{base}}/{{productAPI}}?numericFilters=price>30,rating<=4
+
 ### get product static
-GET {{base}}/{{productAPI}}
+GET {{base}}/{{productAPI}}/test
 
 
 ### create product

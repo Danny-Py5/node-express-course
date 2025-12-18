@@ -3,16 +3,16 @@ const productModel = require("../models/product");
 
 const getAllProductsStatic = async (req, res, next) => {
   const sortedProducts = await productModel
-    .find({})
-    .sort("name")
-    .select("name price")
-    .limit(4);
+    .find({ price: { $gt: 30, $lt: 100 } })
+    .sort("-price")
+    .select("price");
+  // .limit(4);
   // .skip(8);
   res.status(200).json({ sortedProducts, length: sortedProducts.length });
 };
 
 const getAllProducts = async (req, res, next) => {
-  const { featured, company, name, sort, fields } = req.query;
+  const { featured, company, name, sort, fields, numericFilters } = req.query;
   const queryObject = {};
 
   if (featured) {
@@ -23,6 +23,28 @@ const getAllProducts = async (req, res, next) => {
   }
   if (name) {
     queryObject.name = { $regex: name, $options: "i" };
+  }
+  if (numericFilters) {
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "=": "$eq",
+      "<": "$lt",
+      "<=": "$lte",
+    };
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+    let filters = numericFilters.replace(
+      regEx,
+      (match) => `-${operatorMap[match]}-`
+    );
+    // console.log(filters.split(",")[0].split("-"));
+    const options = ["price", "rating"];
+    filters = filters.split(",").forEach((item) => {
+      const [field, operator, value] = item.split("-");
+      if (options.includes(field)) {
+        queryObject[field] = { [operator]: Number(value) };
+      }
+    });
   }
   let result = productModel.find(queryObject);
   // sort
