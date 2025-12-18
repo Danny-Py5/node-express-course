@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | StoreAPI</title>
+
+    <style>
+      .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+
+        justify-content: flex-start;
+        align-items: stretch;
+
+        padding: 16px;
+      }
+
+      .product {
+        flex: 1 1 350px; /* grow | shrink | base width */
+        max-width: 350px;
+
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+
+        background-color: #fff;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff; /* nice blue */
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Welcome to <mark>StoreAPI!</mark></h1>
+
+      <div class="productContainer product-container"></div>
+      <button class="previous">PREVIOUS</button>
+      <button class="next">NEXT</button>
+    </main>
+
+    <script>
+      const fetchProductData = async ({ limit = 10, page = 1 } = {}) => {
+        try {
+          const allProductsRes = await fetch("api/v1/products");
+          const res = await fetch(
+            `api/v1/products?limit=${limit}&page=${page}`
+          );
+          return {
+            products: await res.json(),
+            allProducts: await allProductsRes.json(),
+          };
+        } catch (err) {
+          console.log(err);
+          return null;
+        }
+      };
+
+      let page = 1;
+      let totalPages = 0;
+
+      const renderProducts = ({ page = 1 } = {}) => {
+        fetchProductData({ limit: 5, page: page }).then((data) => {
+          const { products, allProducts } = data;
+
+          totalPages = Math.ceil(allProducts.products.length / 5);
+
+          const productContainer = document.querySelector(".productContainer");
+          productContainer.innerHTML = ""; // clear previous content
+
+          products.products.forEach((product) => {
+            const productDiv = document.createElement("div");
+            productDiv.className = "product";
+
+            productDiv.innerHTML = `
+                <h3>${product.name}</h3>
+                <p>${product.company}</p>
+                <strong>₦${product.price}</strong>
+             `;
+
+            productContainer.appendChild(productDiv);
+          });
+        });
+      };
+      renderProducts({ page: page });
+
+      document.querySelector(".next").addEventListener("click", () => {
+        if (page < totalPages) {
+          page++;
+          renderProducts({ page: page });
+        }
+      });
+      document.querySelector(".previous").addEventListener("click", () => {
+        if (page > 1) {
+          page--;
+          renderProducts({ page: page });
+        }
+      });
+    </script>
+  </body>
+</html>

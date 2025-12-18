@@ -9,6 +9,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.json());
+app.use(express.static("./public"));
 app.use("/api/v1/products", productRouter);
 
 app.get("/home", (req, res) => {
