@@ -1,0 +1,18 @@
+GET http://localhost:3000/api/v1/dashboard/
+
+
+### login route
+POST http://localhost:3000/api/v1/login
+Content-Type: application/json
+
+{
+    "username": "DanKem",
+    "password": "passwordThis"
+}
+
+### get 
+GET http://localhost:3000/api/v1/dashboard
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoiRGFuS2VtIiwiaWF0IjoxNzY2MTMxNzE2LCJleHAiOjE3Njg3MjM3MTZ9.ndkEFadW9LhLpUGMMq4eReRTjr6BhPUSIGpdNUcBuWU
+
+### get 
+GET http://localhost:3000/api/v1/dashboard
