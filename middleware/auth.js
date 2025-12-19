@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
-const CustomAPIError = require("../errors/custom-error");
+const { UnauthenticatedError } = require("../errors");
 
 const authorizationMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    throw new CustomAPIError("No token provided", 400);
+    throw new UnauthenticatedError("No token provided");
   }
 
   const token = authorization.split(" ")[1];
@@ -16,9 +16,8 @@ const authorizationMiddleware = (req, res, next) => {
     // console.log(payload);
     next();
   } catch (error) {
-    throw new CustomAPIError(
-      "ACCESS DENIED: You don' have access to this resource.",
-      400
+    throw new UnauthenticatedError(
+      "ACCESS DENIED: You don't have access to this resource."
     );
   }
 };

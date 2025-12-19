@@ -1,8 +1,10 @@
+const { StatusCodes } = require("http-status-codes");
+
 class CustomAPIError extends Error {
-  constructor(message, statusCode) {
-    super(message)
-    this.statusCode = statusCode
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
 }
 
-module.exports = CustomAPIError
+module.exports = CustomAPIError;
