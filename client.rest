@@ -1,0 +1,49 @@
+@base_route=http://localhost:3000/api/v1
+
+### register
+POST {{base_route}}/auth/register
+Content-Type: application/json
+
+{
+    "name": "", 
+    "email": "danil@gmail.com", 
+    "password": "password"
+}
+
+### login
+POST {{base_route}}/auth/login
+Content-Type: application/json
+
+
+{
+    "username": "daniel", 
+    "password": "password"
+}   
+
+
+### get all products
+GET {{base_route}}/jobs
+
+### get a product
+GET {{base_route}}/jobs/1
+
+### create a product
+POST {{base_route}}/jobs
+Content-Type: application/json
+
+{
+    "title": "post title",
+    "description": "post description"
+}
+
+### update a product
+PATCH {{base_route}}/jobs/1
+Content-Type: application/json
+
+{
+    "title": "post title",
+    "description": "post description"
+}
+
+### delete a product
+DELETE {{base_route}}/jobs/1    
