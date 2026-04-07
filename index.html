@@ -1,0 +1,148 @@
+<!doctyp html>
+<html>
+  <head>
+    <title>Socket.io</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .chat-container {
+        width: 400px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-window {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-input {
+        display: flex;
+        padding: 10px;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .chat-input button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .chat-input button:hover {
+        background: #0056b3;
+      }
+
+      .message {
+        max-width: 70%;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.4;
+        display: inline-block;
+      }
+
+      .message.sent {
+        background: #007bff;
+        color: #fff;
+        align-self: flex-end; /* Push to the right */
+        border-bottom-right-radius: 0;
+      }
+
+      .message.received {
+        background: #e5e5ea;
+        color: #000;
+        align-self: flex-start; /* Push to the left */
+        border-bottom-left-radius: 0;
+      }
+
+      /* body {
+        background: #000;
+        color: #fff;
+      } */
+    </style>
+  </head>
+
+  <body>
+    <div class="chat-container">
+      <div class="chat-window" id="chat-window">
+        <!-- Messages will appear here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </body>
+
+  <script type="module">
+    import { io } from "https://cdn.socket.io/4.8.3/socket.io.esm.min.js";
+    const socket = io("http://localhost:8000");
+    const chatWindow = document.getElementById("chat-window");
+
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const input = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          sendBtn.click();
+        }
+      });
+
+      sendBtn.addEventListener("click", () => {
+        const message = input.value.trim();
+        if (message) {
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message", "sent");
+          messageElement.textContent = message;
+          chatWindow.appendChild(messageElement);
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+
+          input.value = "";
+          socket.emit("message", message);
+        }
+      });
+    });
+
+    socket.on("message", (data) => {
+      const messageElement = document.createElement("div");
+      messageElement.classList.add("message", "received");
+      messageElement.textContent = data;
+      chatWindow.appendChild(messageElement);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+  </script>
+</html>
