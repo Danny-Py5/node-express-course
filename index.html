@@ -108,6 +108,8 @@
       console.log("Connected to server");
     });
 
+    socket.emit("joinRoom", "room111");
+
     document.addEventListener("DOMContentLoaded", () => {
       const input = document.getElementById("messageInput");
       const sendBtn = document.getElementById("sendBtn");

@@ -19,15 +19,21 @@ function getRandomMsg() {
   return msgs[Math.floor(Math.random() * msgs.length)];
 }
 
+let room = "";
+
 io.on("connection", (socket) => {
   console.log("Connected frontend");
-  socket.emit(
-    "message",
-    "backend received your connection. Hello from backend!",
-  );
+
   socket.on("message", (data) => {
     console.log("Message Received:", data);
     socket.emit("message", getRandomMsg());
+    console.log("\n\nroom: ", room);
+    if (room) io.to(room).emit("message", getRandomMsg());
+  });
+
+  socket.on("joinRoom", (roomId) => {
+    room = roomId;
+    socket.join(roomId);
   });
 
   socket.on("disconnect", () => {
