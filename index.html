@@ -96,19 +96,24 @@
         <input type="text" id="messageInput" placeholder="Type a message..." />
         <button id="sendBtn">Send</button>
       </div>
+      <div class="counter-cont">
+        Counts:
+        <span style="font-size: 2rem" class="counter" id="counter">0</span>
+        <button class="close-count">Close count</button>
+      </div>
     </div>
   </body>
-
+  <!-- 
   <script type="module">
     import { io } from "https://cdn.socket.io/4.8.3/socket.io.esm.min.js";
-    const socket = io("http://localhost:8000");
+    const socket = io("http://localhost:8000", {
+      query: { roomId: "room1", userId: "user1" },
+    });
     const chatWindow = document.getElementById("chat-window");
 
     socket.on("connect", () => {
       console.log("Connected to server");
     });
-
-    socket.emit("joinRoom", "room111");
 
     document.addEventListener("DOMContentLoaded", () => {
       const input = document.getElementById("messageInput");
@@ -145,6 +150,23 @@
 
     socket.on("disconnect", () => {
       console.log("Disconnected from server");
+    });
+  </script> -->
+
+  <script type="module">
+    import { io } from "https://cdn.socket.io/4.8.3/socket.io.esm.min.js";
+    const socket = io("http://127.0.0.1:8000", {
+      query: { userId: "user1" },
+    });
+    const counterContainer = document.querySelector(".counter-cont");
+    const counter = document.querySelector(".counter");
+
+    socket.on("connect", () => {
+      console.log("connected to sever");
+    });
+    fetch("http://127.0.0.1:8000/getCounter");
+    socket.on("counter", (count) => {
+      counter.textContent = count;
     });
   </script>
 </html>
